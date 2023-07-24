@@ -5,9 +5,11 @@ import com.getyourdoc.getyourdoctors.exceptions.PatientNotFoundException;
 import com.getyourdoc.getyourdoctors.exceptions.SlotNotAvailableException;
 import com.getyourdoc.getyourdoctors.exceptions.SlotNotFoundException;
 import com.getyourdoc.getyourdoctors.models.Appointment;
+import com.getyourdoc.getyourdoctors.models.ClinicArea;
 import com.getyourdoc.getyourdoctors.models.Patient;
 import com.getyourdoc.getyourdoctors.models.Slot;
 import com.getyourdoc.getyourdoctors.repositories.AppointmentRepository;
+import com.getyourdoc.getyourdoctors.repositories.ClinicAreaRepository;
 import com.getyourdoc.getyourdoctors.repositories.PatientRepository;
 import com.getyourdoc.getyourdoctors.repositories.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +26,20 @@ public class SlotService {
     private final PatientRepository patientRepository;
 
     private final AppointmentRepository appointmentRepository;
+    private final ClinicAreaRepository clinicAreaRepository;
 
     @Autowired
-    public SlotService(SlotRepository slotRepository, PatientRepository patientRepository, AppointmentRepository appointmentRepository) {
+    public SlotService(SlotRepository slotRepository, PatientRepository patientRepository, AppointmentRepository appointmentRepository, ClinicAreaRepository clinicAreaRepository) {
         this.slotRepository = slotRepository;
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
+        this.clinicAreaRepository = clinicAreaRepository;
     }
 
     // Method to create a new slot
-    public Slot createSlot(Slot slot) {
+    public Slot createSlot(Slot slot, Long clinicAreaId) {
+        ClinicArea clinicArea = clinicAreaRepository.findClinicAreaByClinicAreaId(clinicAreaId);
+        slot.setClinicArea(clinicArea);
         return slotRepository.save(slot);
     }
 

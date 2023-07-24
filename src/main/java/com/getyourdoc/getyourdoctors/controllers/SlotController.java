@@ -22,9 +22,9 @@ public class SlotController {
         this.slotService = slotService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Slot> createSlot(@RequestBody Slot slot) {
-        Slot createdSlot = slotService.createSlot(slot);
+    @PostMapping("/create/{clinicAreaId}")
+    public ResponseEntity<Slot> createSlot(@RequestBody Slot slot, @PathVariable Long clinicAreaId) {
+        Slot createdSlot = slotService.createSlot(slot, clinicAreaId);
         return ResponseEntity.ok(createdSlot);
     }
 
