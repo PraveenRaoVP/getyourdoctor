@@ -34,6 +34,10 @@ public class Appointment {
     @JsonIgnoreProperties({"hibernateLazyInitializer","appointments"}) // Ignore the "appointments" field in Slot during serialization
     private Slot slot;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer","appointment"}) // Ignore the "appointment" field in MedicalRecord during serialization
+    private MedicalRecord medicalRecord;
+
     @Column(nullable = false)
     private LocalDate appointmentDate;
 

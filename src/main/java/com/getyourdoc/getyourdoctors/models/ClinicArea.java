@@ -49,7 +49,7 @@ public class ClinicArea {
 
     @OneToMany(mappedBy = "clinicArea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties("clinicArea")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","clinicArea"})
     private Set<Slot> availableSlots = new HashSet<>();
 
     private boolean isAvailable;

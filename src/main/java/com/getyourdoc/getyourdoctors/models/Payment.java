@@ -1,5 +1,6 @@
 package com.getyourdoc.getyourdoctors.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,14 +20,17 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","appointments"})
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","patient"})
     private Appointment appointment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","payments","patient","appointment"})
     private Receipt receipt;
 
     @Column(nullable = false)

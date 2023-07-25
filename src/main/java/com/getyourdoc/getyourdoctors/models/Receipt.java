@@ -1,6 +1,8 @@
 package com.getyourdoc.getyourdoctors.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,14 +22,17 @@ public class Receipt {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","appointments"})
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","patient"})
     private Appointment appointment;
 
     @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler","receipt","patient","appointment"})
     private Set<Payment> payments = new HashSet<>();
 
     // Other receipt related fields, getters, and setters can be added here

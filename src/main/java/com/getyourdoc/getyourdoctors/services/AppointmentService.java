@@ -193,7 +193,7 @@ public class AppointmentService {
         existingAppointment.setStartTime(updatedAppointment.getStartTime());
         existingAppointment.setEndTime(updatedAppointment.getEndTime());
         existingAppointment.setClinicArea(updatedAppointment.getClinicArea());
-
+        existingAppointment.setMedicalRecord(updatedAppointment.getMedicalRecord());
         // Save the updated appointment to the database
         return appointmentRepository.save(existingAppointment);
     }
