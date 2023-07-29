@@ -1,8 +1,10 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Patient;
+import com.getyourdoc.getyourdoctors.models.helpers.LoginRegisterDTO;
 import com.getyourdoc.getyourdoctors.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/patients")
 public class PatientController {
+    @Value("{app.jwtSecret}")
+    private String jwtSecret;
+
     private final PatientService patientService;
 
     @Autowired
@@ -26,8 +31,8 @@ public class PatientController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Patient> loginPatient(@RequestParam String email, @RequestParam String password) {
-        Patient authenticatedPatient = patientService.loginPatient(email, password);
+    public ResponseEntity<Patient> loginPatient(@RequestBody LoginRegisterDTO loginRegisterDTO) {
+        Patient authenticatedPatient = patientService.loginPatient(loginRegisterDTO.getEmail(), loginRegisterDTO.getPassword());
 
         if (authenticatedPatient != null) {
             return new ResponseEntity<>(authenticatedPatient, HttpStatus.OK);

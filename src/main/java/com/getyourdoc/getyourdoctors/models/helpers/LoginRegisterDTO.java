@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRegisterDTO {
-    private Patient patient;
-    private String token;
+    private String email;
+    private String password;
 }

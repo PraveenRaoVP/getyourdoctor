@@ -2,6 +2,7 @@ package com.getyourdoc.getyourdoctors.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,8 +39,16 @@ public class Appointment {
     @JsonIgnoreProperties({"hibernateLazyInitializer","appointment"}) // Ignore the "appointment" field in MedicalRecord during serialization
     private MedicalRecord medicalRecord;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer","appointment"})
+    @JsonManagedReference
+    private Doctor doctor;
+
     @Column(nullable = false)
     private LocalDate appointmentDate;
+
+    @Column(nullable = false)
+    private String symptoms;
 
     @Column(nullable = false)
     private LocalTime startTime;
