@@ -16,12 +16,12 @@ public class Feedback {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id", nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clinic_id", nullable = false)
+    @JoinColumn(name = "clinic_id", nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private ClinicArea clinicArea;
 

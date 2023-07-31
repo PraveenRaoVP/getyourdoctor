@@ -15,10 +15,12 @@ import java.util.Optional;
 public class MedicalRecordService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final AppointmentService appointmentService;
+    private final PatientService patientService;
 
-    public MedicalRecordService(MedicalRecordRepository medicalRecordRepository, AppointmentService appointmentService) {
+    public MedicalRecordService(MedicalRecordRepository medicalRecordRepository, AppointmentService appointmentService, PatientService patientService) {
         this.medicalRecordRepository = medicalRecordRepository;
         this.appointmentService = appointmentService;
+        this.patientService = patientService;
     }
 
     public MedicalRecord createMedicalRecord(Long appointmentId, MedicalRecord medicalRecord) {
@@ -83,4 +85,15 @@ public class MedicalRecordService {
         medicalRecordRepository.delete(medicalRecord);
     }
 
+    public List<MedicalRecord> getMedicalRecordsByPatientId(Long patientId) {
+
+        Patient patient = patientService.getPatientById(patientId);
+        if (patient == null) {
+            // Handle the case when the patient does not exist
+            // You can throw an exception or return null, depending on your business logic
+            // For simplicity, let's assume we throw an exception here
+            throw new PatientNotFoundException("Invalid patient ID");
+        }
+        return medicalRecordRepository.findByAppointmentPatient(patient);
+    }
 }

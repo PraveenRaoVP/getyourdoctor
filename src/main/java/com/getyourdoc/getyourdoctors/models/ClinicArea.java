@@ -1,6 +1,7 @@
 package com.getyourdoc.getyourdoctors.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,13 +47,16 @@ public class ClinicArea {
     private String workingHours;
     private String contactNumber;
     private String email;
-
+    private String address;
     @OneToMany(mappedBy = "clinicArea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties({"hibernateLazyInitializer","clinicArea"})
     private Set<Slot> availableSlots = new HashSet<>();
 
     private boolean isAvailable;
+
+
+    private String keywords;
 
     // Other clinic area related fields, getters, and setters can be added here
 

@@ -41,7 +41,7 @@ public class ClinicAreaController {
     }
 
     // Endpoint to update an existing ClinicArea
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ClinicArea> updateClinicArea(
             @PathVariable("id") Long clinicAreaId,
             @RequestBody ClinicArea updatedClinicArea
@@ -55,5 +55,11 @@ public class ClinicAreaController {
     public ResponseEntity<Void> deleteClinicAreaById(@PathVariable("id") Long clinicAreaId) {
         clinicAreaService.deleteClinicAreaById(clinicAreaId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/clinics")
+    public ResponseEntity<List<ClinicArea>> searchClinic(@RequestParam("search") String search) {
+        List<ClinicArea> clinicAreas = clinicAreaService.searchClinic(search);
+        return new ResponseEntity<>(clinicAreas, HttpStatus.OK);
     }
 }

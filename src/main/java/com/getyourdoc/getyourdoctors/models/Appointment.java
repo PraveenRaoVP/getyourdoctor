@@ -1,7 +1,9 @@
 package com.getyourdoc.getyourdoctors.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -49,6 +51,14 @@ public class Appointment {
     // Other appointment-related fields, getters, and setters can be added here
 
     // No need to write explicit constructors, getters, and setters
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","appointment"}) // Ignore the "appointments" field in Doctor during serialization
+    private Doctor doctor;
+
+    @Column(nullable = false)
+    private String symptoms;
 
     @Override
     public int hashCode() {

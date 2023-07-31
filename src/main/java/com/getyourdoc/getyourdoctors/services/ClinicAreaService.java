@@ -45,12 +45,18 @@ public class ClinicAreaService {
         existingClinicArea.setEmail(updatedClinicArea.getEmail());
         existingClinicArea.setAvailableSlots(updatedClinicArea.getAvailableSlots());
         existingClinicArea.setAvailable(updatedClinicArea.isAvailable());
-
+        existingClinicArea.setAddress(updatedClinicArea.getAddress());
+        existingClinicArea.setKeywords(updatedClinicArea.getKeywords());
         return clinicAreaRepository.save(existingClinicArea);
     }
 
     // Method to delete a ClinicArea by its ID
     public void deleteClinicAreaById(Long clinicAreaId) {
         clinicAreaRepository.deleteById(clinicAreaId);
+    }
+
+    // Search Clinic
+    public List<ClinicArea> searchClinic(String clinicAreaName) {
+        return clinicAreaRepository.findByClinicAreaNameContainingIgnoreCase(clinicAreaName);
     }
 }

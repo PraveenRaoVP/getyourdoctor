@@ -15,6 +15,8 @@ public class AppointmentRequest {
         private Long patientId;
         private Long clinicAreaId;
         private Long slotId;
+        private Long doctorId;
+        private String symptoms;
         private LocalDate appointmentDate;
         private LocalTime startTime;
         private LocalTime endTime;

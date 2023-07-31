@@ -42,7 +42,7 @@ public class AppointmentController {
 
     @DeleteMapping("/cancel/{appointmentId}")
     public ResponseEntity<Void> cancelAppointment(@PathVariable Long appointmentId) {
-         // Add code to cancel an appointment
+        // Add code to cancel an appointment
         appointmentService.cancelAppointment(appointmentId);
         return ResponseEntity.noContent().build();
     }

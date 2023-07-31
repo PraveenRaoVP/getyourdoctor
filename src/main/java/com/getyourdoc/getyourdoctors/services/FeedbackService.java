@@ -6,8 +6,8 @@ import com.getyourdoc.getyourdoctors.exceptions.PatientNotFoundException;
 import com.getyourdoc.getyourdoctors.models.ClinicArea;
 import com.getyourdoc.getyourdoctors.models.Feedback;
 import com.getyourdoc.getyourdoctors.models.Patient;
+import com.getyourdoc.getyourdoctors.models.helpers.FeedbackRequest;
 import com.getyourdoc.getyourdoctors.repositories.FeedbackRepository;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class FeedbackService {
         this.patientService = patientService;
         this.clinicAreaService = clinicAreaService;
     }
-    public Feedback createFeedback(Long patientId, Long clinicAreaId, Feedback feedback) {
+    public Feedback createFeedback(Long patientId, Long clinicAreaId, FeedbackRequest feedbackReq) {
         Patient patient = patientService.getPatientById(patientId);
         if (patient == null) {
             throw new PatientNotFoundException("Invalid patient ID");
@@ -37,9 +37,11 @@ public class FeedbackService {
 //        if (!Hibernate.isInitialized(clinicArea)) {
 //            Hibernate.initialize(clinicArea);
 //        }
-
+        Feedback feedback = new Feedback();
         feedback.setPatient(patient);
         feedback.setClinicArea(clinicArea);
+        feedback.setRating(feedbackReq.getRating());
+        feedback.setComment(feedbackReq.getComment());
         return feedbackRepository.save(feedback);
     }
 

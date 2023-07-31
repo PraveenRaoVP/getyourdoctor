@@ -1,6 +1,7 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Feedback;
+import com.getyourdoc.getyourdoctors.models.helpers.FeedbackRequest;
 import com.getyourdoc.getyourdoctors.services.FeedbackService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,10 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @PostMapping("/{patientId}/{clinicAreaId}")
-    public ResponseEntity<Feedback> createFeedback(@PathVariable Long patientId,
-                                                   @PathVariable Long clinicAreaId,
-                                                   @RequestBody Feedback feedback) {
-        Feedback createdFeedback = feedbackService.createFeedback(patientId, clinicAreaId, feedback);
+    @PostMapping("/create-feedback")
+    public ResponseEntity<Feedback> createFeedback(
+                                                   @RequestBody FeedbackRequest feedbackReq) {
+        Feedback createdFeedback = feedbackService.createFeedback(feedbackReq.getPatientId() , feedbackReq.getClinicAreaId(), feedbackReq);
         return new ResponseEntity<>(createdFeedback, HttpStatus.CREATED);
     }
 
