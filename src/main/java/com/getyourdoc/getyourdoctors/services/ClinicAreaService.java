@@ -6,6 +6,8 @@ import com.getyourdoc.getyourdoctors.repositories.ClinicAreaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,6 +27,19 @@ public class ClinicAreaService {
     // Method to retrieve all ClinicAreas
     public List<ClinicArea> getAllClinicAreas() {
         return clinicAreaRepository.findAll();
+    }
+
+    public List<ClinicArea> getClinicAreasByAddress(String address, String keywords) {
+        // return list of ClinicArea by address
+
+        String[] keywordArray = keywords.split("\\s+");
+        // System.out.println(Arrays.toString(keywordArray));
+        List<String> keywordList = Arrays.asList(keywordArray);
+        List<ClinicArea> clinicAreas = new ArrayList<>();
+        for(String keyword: keywordList) {
+            clinicAreas.addAll(clinicAreaRepository.findByAddressAndKeywordsContainingIgnoreCase(address, keyword));
+        }
+        return clinicAreas;
     }
 
     // Method to retrieve a ClinicArea by its ID

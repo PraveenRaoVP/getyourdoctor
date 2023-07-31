@@ -1,6 +1,7 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.ClinicArea;
+import com.getyourdoc.getyourdoctors.models.helpers.LocationHelper;
 import com.getyourdoc.getyourdoctors.services.ClinicAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,12 @@ public class ClinicAreaController {
     public ResponseEntity<Void> deleteClinicAreaById(@PathVariable("id") Long clinicAreaId) {
         clinicAreaService.deleteClinicAreaById(clinicAreaId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/address")
+    public ResponseEntity<List<ClinicArea>> getClinicAreaByAddress(@RequestBody LocationHelper location) {
+        List<ClinicArea> clinicAreas = clinicAreaService.getClinicAreasByAddress(location.getAddress(), location.getKeywords());
+        return new ResponseEntity<>(clinicAreas, HttpStatus.OK);
     }
 
     @GetMapping("/clinics")
