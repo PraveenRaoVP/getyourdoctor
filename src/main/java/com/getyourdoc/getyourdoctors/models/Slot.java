@@ -55,11 +55,6 @@ public class Slot {
     @Column(nullable = false)
     private boolean available;
 
-    @ManyToMany(mappedBy = "slots")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","slots"}) // Ignore the "slots" field in Doctor during serialization
-    @JsonManagedReference
-    private Set<Doctor> doctors;
-
     // Other slot-related fields, getters, and setters can be added here
 
     // No need to write explicit constructors, getters, and setters

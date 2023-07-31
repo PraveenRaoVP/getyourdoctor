@@ -1,9 +1,15 @@
 package com.getyourdoc.getyourdoctors.services;
 import com.getyourdoc.getyourdoctors.exceptions.AppointmentNotAvailable;
 import com.getyourdoc.getyourdoctors.exceptions.SlotNotAvailableException;
-import com.getyourdoc.getyourdoctors.models.*;
+import com.getyourdoc.getyourdoctors.models.Appointment;
+import com.getyourdoc.getyourdoctors.models.ClinicArea;
+import com.getyourdoc.getyourdoctors.models.Patient;
+import com.getyourdoc.getyourdoctors.models.Slot;
 import com.getyourdoc.getyourdoctors.models.helpers.AppointmentRequest;
-import com.getyourdoc.getyourdoctors.repositories.*;
+import com.getyourdoc.getyourdoctors.repositories.AppointmentRepository;
+import com.getyourdoc.getyourdoctors.repositories.ClinicAreaRepository;
+import com.getyourdoc.getyourdoctors.repositories.PatientRepository;
+import com.getyourdoc.getyourdoctors.repositories.SlotRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +28,13 @@ public class AppointmentService {
     private final ClinicAreaRepository clinicAreaRepository;
     private final SlotRepository slotRepository;
     private final PatientRepository patientRepository;
-    private final DoctorRepository doctorRepository;
 
 
-    public AppointmentService(AppointmentRepository appointmentRepository, ClinicAreaRepository clinicAreaRepository, SlotRepository slotRepository, PatientRepository patientRepository, DoctorRepository doctorRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository, ClinicAreaRepository clinicAreaRepository, SlotRepository slotRepository, PatientRepository patientRepository) {
         this.appointmentRepository = appointmentRepository;
         this.clinicAreaRepository = clinicAreaRepository;
         this.slotRepository = slotRepository;
         this.patientRepository = patientRepository;
-        this.doctorRepository = doctorRepository;
     }
 
 //    public Appointment bookAppointment(Appointment appointment) {
@@ -66,9 +70,6 @@ public class AppointmentService {
         Slot slot = slotRepository.findById(appointmentRequest.getSlotId())
                 .orElseThrow(() -> new EntityNotFoundException("Slot not found with ID: " + appointmentRequest.getSlotId()));
 
-        Doctor doctor = doctorRepository.findById(appointmentRequest.getDoctorId())
-                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with ID: " + appointmentRequest.getDoctorId()));
-
         // Check if the slot is available for booking
         if (!slot.isAvailable()) {
             throw new SlotNotAvailableException("Slot is not available for booking.");
@@ -79,11 +80,9 @@ public class AppointmentService {
         appointment.setPatient(patient);
         appointment.setClinicArea(clinicArea);
         appointment.setSlot(slot);
-        appointment.setSymptoms(appointmentRequest.getSymptoms());
         appointment.setAppointmentDate(appointmentRequest.getAppointmentDate());
         appointment.setStartTime(appointmentRequest.getStartTime());
         appointment.setEndTime(appointmentRequest.getEndTime());
-        appointment.setDoctor(doctor);
 
         // Update the slot availability status to booked
         slot.setAvailable(false);
@@ -100,14 +99,13 @@ public class AppointmentService {
         // Check if the appointment exists
         Appointment existingAppointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Appointment not found with ID: " + appointmentId));
-        Slot slot = existingAppointment.getSlot();
+
         // Check if the appointment is cancellable within a certain time limit (e.g., 24 hours before the appointment)
         LocalDate today = LocalDate.now();
         if (!isCancellable(existingAppointment.getAppointmentDate(), existingAppointment.getStartTime(), today)) {
             throw new IllegalArgumentException("Appointment is not cancellable.");
         }
-        slot.setAvailable(true);
-        slotRepository.save(slot);
+
         // If the appointment is cancellable, delete it
         appointmentRepository.deleteById(appointmentId);
     }
@@ -196,8 +194,6 @@ public class AppointmentService {
         existingAppointment.setEndTime(updatedAppointment.getEndTime());
         existingAppointment.setClinicArea(updatedAppointment.getClinicArea());
         existingAppointment.setMedicalRecord(updatedAppointment.getMedicalRecord());
-        existingAppointment.setDoctor(updatedAppointment.getDoctor());
-        existingAppointment.setSymptoms(updatedAppointment.getSymptoms());
         // Save the updated appointment to the database
         return appointmentRepository.save(existingAppointment);
     }

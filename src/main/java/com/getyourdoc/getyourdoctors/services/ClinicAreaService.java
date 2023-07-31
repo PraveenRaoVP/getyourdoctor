@@ -53,9 +53,4 @@ public class ClinicAreaService {
     public void deleteClinicAreaById(Long clinicAreaId) {
         clinicAreaRepository.deleteById(clinicAreaId);
     }
-
-    // Search Clinic
-    public List<ClinicArea> searchClinic(String clinicAreaName) {
-        return clinicAreaRepository.findByClinicAreaNameContainingIgnoreCase(clinicAreaName);
-    }
 }

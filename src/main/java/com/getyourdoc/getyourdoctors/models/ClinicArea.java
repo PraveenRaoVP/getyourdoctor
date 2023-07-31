@@ -51,7 +51,6 @@ public class ClinicArea {
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties({"hibernateLazyInitializer","clinicArea"})
     private Set<Slot> availableSlots = new HashSet<>();
-    private String location;
 
     private boolean isAvailable;
 
