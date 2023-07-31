@@ -24,7 +24,7 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = "application/json")
     public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient) {
         Patient registeredPatient = patientService.registerPatient(patient);
         return new ResponseEntity<>(registeredPatient, HttpStatus.CREATED);
