@@ -65,7 +65,29 @@ public class PatientService {
             existingPatient.setPatientPhone(updatedPatient.getPatientPhone());
             existingPatient.setPatientGender(updatedPatient.getPatientGender());
             existingPatient.setPatientAge(updatedPatient.getPatientAge());
-            existingPatient.setPatientAddress(updatedPatient.getPatientAddress());
+
+            // Check for null values before updating the patientAddress fields
+            if (updatedPatient.getPatientAddress() != null) {
+                if (updatedPatient.getPatientAddress().getDoorNo() != null) {
+                    existingPatient.getPatientAddress().setDoorNo(updatedPatient.getPatientAddress().getDoorNo());
+                }
+                if (updatedPatient.getPatientAddress().getStreet() != null) {
+                    existingPatient.getPatientAddress().setStreet(updatedPatient.getPatientAddress().getStreet());
+                }
+                if (updatedPatient.getPatientAddress().getCity() != null) {
+                    existingPatient.getPatientAddress().setCity(updatedPatient.getPatientAddress().getCity());
+                }
+                if (updatedPatient.getPatientAddress().getState() != null) {
+                    existingPatient.getPatientAddress().setState(updatedPatient.getPatientAddress().getState());
+                }
+                if (updatedPatient.getPatientAddress().getCountry() != null) {
+                    existingPatient.getPatientAddress().setCountry(updatedPatient.getPatientAddress().getCountry());
+                }
+                if (updatedPatient.getPatientAddress().getPincode() != null) {
+                    existingPatient.getPatientAddress().setPincode(updatedPatient.getPatientAddress().getPincode());
+                }
+            }
+
             existingPatient.setAppointments(updatedPatient.getAppointments());
             existingPatient.setProfilePictureUrl(updatedPatient.getProfilePictureUrl());
             // Add any additional fields you want to update

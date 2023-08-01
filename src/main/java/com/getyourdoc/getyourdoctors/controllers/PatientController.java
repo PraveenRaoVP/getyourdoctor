@@ -1,6 +1,7 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Patient;
+import com.getyourdoc.getyourdoctors.models.helpers.IMustBeCrazy;
 import com.getyourdoc.getyourdoctors.models.helpers.LoginRegisterDTO;
 import com.getyourdoc.getyourdoctors.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,4 +73,11 @@ public class PatientController {
         patientService.deletePatientById(patientId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Patient>> searchPatients(@RequestBody IMustBeCrazy searchObj) {
+        List<Patient> patients = patientService.searchUsers(searchObj.getKeyword());
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
 }
