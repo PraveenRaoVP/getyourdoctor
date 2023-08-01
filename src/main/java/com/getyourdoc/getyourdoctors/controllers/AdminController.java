@@ -2,6 +2,7 @@ package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Admin;
 import com.getyourdoc.getyourdoctors.models.enums.Roles;
+import com.getyourdoc.getyourdoctors.models.helpers.LoginRegisterDTO;
 import com.getyourdoc.getyourdoctors.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,8 +73,8 @@ public class AdminController {
         return ResponseEntity.ok(updatedAdmin);
     }
     @PostMapping("/login")
-    public ResponseEntity<Admin> login(@RequestParam String adminUsername, @RequestParam String adminPassword) {
-        Admin admin = adminService.login(adminUsername, adminPassword);
+    public ResponseEntity<Admin> login(@RequestBody LoginRegisterDTO loginRegisterDTO) {
+        Admin admin = adminService.login(loginRegisterDTO.getEmail(), loginRegisterDTO.getPassword());
         if (admin != null) {
             return ResponseEntity.ok(admin); // Return the admin entity if login is successful
         } else {

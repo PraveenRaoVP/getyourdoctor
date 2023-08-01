@@ -66,9 +66,9 @@ public class AdminService {
         }
     }
 
-    public Admin login(String adminUsername, String adminPassword) {
+    public Admin login(String adminEmail, String adminPassword) {
         // Find the admin by username
-        Optional<Admin> optionalAdmin = adminRepository.findByAdminUsername(adminUsername);
+        Optional<Admin> optionalAdmin = adminRepository.findByAdminEmail(adminEmail);
 
         // Check if the admin exists and the password is correct
         if (optionalAdmin.isPresent()) {
