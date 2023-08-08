@@ -2,6 +2,7 @@ package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Admin;
 import com.getyourdoc.getyourdoctors.models.enums.Roles;
+import com.getyourdoc.getyourdoctors.models.helpers.IMustBeCrazy;
 import com.getyourdoc.getyourdoctors.models.helpers.LoginRegisterDTO;
 import com.getyourdoc.getyourdoctors.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,9 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Return 401 Unauthorized if login fails
         }
     }
-
+    @GetMapping("/search")
+    public ResponseEntity<List<Admin>> searchAdmin(@RequestBody IMustBeCrazy keys) {
+        List<Admin> admins = adminService.searchAdmin(keys.getKeyword());
+        return ResponseEntity.ok(admins);
+    }
 }

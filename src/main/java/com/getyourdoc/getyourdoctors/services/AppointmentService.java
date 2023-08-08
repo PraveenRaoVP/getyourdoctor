@@ -56,6 +56,9 @@ public class AppointmentService {
 //    }
 
     public Appointment bookAppointment(AppointmentRequest appointmentRequest) {
+
+
+
         // Retrieve the patient, clinic area, and slot based on the provided IDs
         Patient patient = patientRepository.findById(appointmentRequest.getPatientId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with ID: " + appointmentRequest.getPatientId()));
@@ -90,9 +93,9 @@ public class AppointmentService {
 
         // Save the updated slot in the database
         slotRepository.save(slot);
-
         // Save the appointment in the database
         return appointmentRepository.save(appointment);
+
     }
 
 

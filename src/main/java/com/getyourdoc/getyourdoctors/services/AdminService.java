@@ -84,4 +84,8 @@ public class AdminService {
 
         return null; // Return null if login fails
     }
+
+    public List<Admin> searchAdmin(String keyword) {
+        return adminRepository.searchAdminByAdminUsername(keyword);
+    }
 }

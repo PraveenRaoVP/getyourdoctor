@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentRequest {
-
         private Long patientId;
         private Long clinicAreaId;
         private Long slotId;
@@ -20,5 +19,4 @@ public class AppointmentRequest {
         private LocalDate appointmentDate;
         private LocalTime startTime;
         private LocalTime endTime;
-
 }
