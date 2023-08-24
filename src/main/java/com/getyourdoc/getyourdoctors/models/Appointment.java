@@ -23,7 +23,7 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","appointments"}) // Ignore the "appointments" field in Patient during serialization
+    @JsonIgnoreProperties({"hibernateLazyInitializer","appointments", "doctor"}) // Ignore the "appointments" field in Patient during serialization
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,9 +52,9 @@ public class Appointment {
 
     // No need to write explicit constructors, getters, and setters
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","appointment"}) // Ignore the "appointments" field in Doctor during serialization
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "appointments"}) // Ignore the "appointments" field in Doctor during serialization
     private Doctor doctor;
 
     @Column(nullable = false)

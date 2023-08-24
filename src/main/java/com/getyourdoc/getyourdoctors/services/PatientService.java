@@ -3,6 +3,7 @@ package com.getyourdoc.getyourdoctors.services;
 import com.getyourdoc.getyourdoctors.exceptions.InvalidCredentialsException;
 import com.getyourdoc.getyourdoctors.exceptions.PatientAlreadyExistsException;
 import com.getyourdoc.getyourdoctors.exceptions.PatientNotFoundException;
+import com.getyourdoc.getyourdoctors.models.Appointment;
 import com.getyourdoc.getyourdoctors.models.Patient;
 import com.getyourdoc.getyourdoctors.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PatientService {
@@ -101,5 +103,14 @@ public class PatientService {
     }
     public List<Patient> searchUsers(String keyword){
         return patientRepository.findByPatientNameContainingIgnoreCaseOrPatientEmailContainingIgnoreCase(keyword, keyword);
+    }
+
+    public Set<Appointment> getAppointmentsByPatient(Long patientId) {
+        try {
+            Patient patient = patientRepository.findById(patientId).orElse(null);
+            return (Set<Appointment>) patient.getAppointments();
+        } catch (Exception e){
+            throw new PatientNotFoundException("Patient not found with ID: " + patientId);
+        }
     }
 }

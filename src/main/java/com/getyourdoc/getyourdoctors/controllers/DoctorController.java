@@ -1,7 +1,10 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
 import com.getyourdoc.getyourdoctors.models.Doctor;
+import com.getyourdoc.getyourdoctors.models.helpers.Criteria;
+import com.getyourdoc.getyourdoctors.models.helpers.TwoArgHelper;
 import com.getyourdoc.getyourdoctors.services.DoctorService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +69,17 @@ public class DoctorController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/add-to-clinic-area/{clinicAreaId}/{doctorId}")
+    public ResponseEntity<Doctor> addDoctorToClinicArea(@PathVariable Long clinicAreaId, @PathVariable Long doctorId) {
+        Doctor savedDoctor = doctorService.addDoctorToClinicArea(doctorId, clinicAreaId);
+        return new ResponseEntity<>(savedDoctor, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Doctor>> searchDoctors(@RequestBody Criteria criteria) {
+        List<Doctor> doctors = doctorService.searchDoctors(criteria);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 }

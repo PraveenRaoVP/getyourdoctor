@@ -55,6 +55,10 @@ public class ClinicArea {
 
     private boolean isAvailable;
 
+    @OneToMany(mappedBy = "clinicArea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties({"hibernateLazyInitializer","clinicArea"})
+    private Set<Doctor> doctors;
 
     private String keywords;
 

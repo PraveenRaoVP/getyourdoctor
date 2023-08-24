@@ -37,11 +37,16 @@ public class Doctor {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "doctors"}) // Ignore the "doctors" field in Slot during serialization
     private Set<Slot> slots;
 
-    // One to one relationship with appointment
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", unique = true)
+    // One to many relationship with appointment
+    // One to many relationship with appointment
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "doctor"})
-    private Appointment appointment;
+    private Set<Appointment> appointments;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_area_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "doctors"})
+    private ClinicArea clinicArea;
 
     @Override
     public int hashCode() {

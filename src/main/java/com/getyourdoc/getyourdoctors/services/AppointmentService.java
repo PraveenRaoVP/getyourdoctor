@@ -99,20 +99,37 @@ public class AppointmentService {
     }
 
 
-    public void cancelAppointment(Long appointmentId) {
+    public List<Appointment> cancelAppointment(Long appointmentId) {
         // Check if the appointment exists
         Appointment existingAppointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Appointment not found with ID: " + appointmentId));
         Slot slot = existingAppointment.getSlot();
+
         // Check if the appointment is cancellable within a certain time limit (e.g., 24 hours before the appointment)
         LocalDate today = LocalDate.now();
         if (!isCancellable(existingAppointment.getAppointmentDate(), existingAppointment.getStartTime(), today)) {
             throw new IllegalArgumentException("Appointment is not cancellable.");
         }
+
+        // Update the slot availability to true
         slot.setAvailable(true);
         slotRepository.save(slot);
-        // If the appointment is cancellable, delete it
+
+        // Remove the appointment from the doctor's appointments
+        Doctor doctor = existingAppointment.getDoctor();
+        doctor.getAppointments().remove(existingAppointment);
+
+        // Remove the appointment from the patient's appointments
+        Patient patient = existingAppointment.getPatient();
+        patient.getAppointments().remove(existingAppointment);
+
+        // Save the updated doctor and patient entities
+        doctorRepository.save(doctor);
+        patientRepository.save(patient);
+
+        // Delete the appointment
         appointmentRepository.deleteById(appointmentId);
+        return getAppointmentsByPatient(existingAppointment.getPatient().getPatientId());
     }
 
     private boolean isCancellable(LocalDate appointmentDate, LocalTime appointmentTime, LocalDate currentDate) {

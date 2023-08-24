@@ -1,5 +1,6 @@
 package com.getyourdoc.getyourdoctors.controllers;
 
+import com.getyourdoc.getyourdoctors.models.Appointment;
 import com.getyourdoc.getyourdoctors.models.Patient;
 import com.getyourdoc.getyourdoctors.models.helpers.IMustBeCrazy;
 import com.getyourdoc.getyourdoctors.models.helpers.LoginRegisterDTO;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/patients")
@@ -78,6 +80,12 @@ public class PatientController {
     public ResponseEntity<List<Patient>> searchPatients(@RequestBody IMustBeCrazy searchObj) {
         List<Patient> patients = patientService.searchUsers(searchObj.getKeyword());
         return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @GetMapping("/appointments/{patientId}")
+    public ResponseEntity<Set<Appointment>> getAppointments(@PathVariable Long patientId){
+        Set<Appointment> appointments = patientService.getAppointmentsByPatient(patientId);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
 }

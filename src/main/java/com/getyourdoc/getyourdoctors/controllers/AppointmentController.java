@@ -41,10 +41,10 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/cancel/{appointmentId}")
-    public ResponseEntity<Void> cancelAppointment(@PathVariable Long appointmentId) {
+    public ResponseEntity<List<Appointment>> cancelAppointment(@PathVariable Long appointmentId) {
         // Add code to cancel an appointment
-        appointmentService.cancelAppointment(appointmentId);
-        return ResponseEntity.noContent().build();
+        List<Appointment> leftoutAppointments = appointmentService.cancelAppointment(appointmentId);
+        return ResponseEntity.ok(leftoutAppointments);
     }
 
     @GetMapping("/patient/{patientId}")
